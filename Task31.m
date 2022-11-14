@@ -5,7 +5,7 @@ close all; %askdnoasnda askdmp a
 N = 16; %Grid size
 p = 0.01; %Chance of tree growth
 f = 0.2; %Chance of lightning
-T = 10^4;
+T = 10^4; %Test kommentar 
 forest = ones(N); %1 for empty
 change = 0;
 fireCount = 0;
