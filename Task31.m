@@ -1,7 +1,7 @@
 clear;
 clc;
 clf;
-close all;
+close all; %askdnoasnda askdmp a
 N = 16; %Grid size
 p = 0.01; %Chance of tree growth
 f = 0.2; %Chance of lightning
