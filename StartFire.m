@@ -10,7 +10,7 @@ treeRadius = 2;
 forestSize = [1000,1000];
 treeOffset = 0;
 trees = 5000;
-initFireRadius = 200;
+initFireRadius = 100;
 
 forestPos = readmatrix('Forest.csv');
 [n,N] = size(forestPos);
@@ -20,9 +20,10 @@ isBurning = false(N,1);
 %https://se.mathworks.com/help/matlab/ref/matlab.graphics.shape.internal.datacursormanager.html
 
 [x,y] = ginput(1);
+a = [x,y];
 
 for i = 1:N
-    d(i) = norm(forestPos(:,i) - [x,y]);
+    d(i) = norm(forestPos(:,i) - a');
     if d(i) <= initFireRadius
         isBurning(i) = true;
     end 
