@@ -1,13 +1,15 @@
-function indexWaterBombTrees = waterBombTrees(x,y,axis,range,forestPos,bombRadius)
+%Author Johan Rumar Karlquist
+function indexWaterBombTrees = waterBombTrees(lineStart,lineEnd,forestPos,bombRadius)
     %axis=1 motsvarar waterbombning i x-led, och axis=2 waterbombning i y-led
-    %Väldigt enkel för tillfället, borde kunna generalisera detta till linje i vilken 
-    %orientering som helst, genom att beräkna "line to point distance".
     distanceToLine=ones(5000,1)*(bombRadius+1);
     indexWaterBombTrees=[];
     for i=1:5000
-        if abs(forestPos(axis,i)-y)<range
-            distanceToLine(i)=abs(x-forestPos(3-axis,i));
-        end
+        numerator = abs((lineEnd(1) - lineStart(1)) * (lineStart(2) - forestPos(2,i))... 
+        - (lineStart(1) - forestPos(1,i)) * (lineEnd(2) - lineStart(2)));
+ 
+        denominator = sqrt((lineEnd(1) - lineStart(1)) ^ 2 + (lineEnd(2) - lineStart(2)) ^ 2);
+        
+        distanceToLine(i)=numerator./denominator;
     end
     for i=1:5000
         if distanceToLine(i)<bombRadius
