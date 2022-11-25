@@ -45,12 +45,42 @@ for i = 1:N
 end
 %--------------------------------------------------------------------------
 %Simulation start:
-
-simFrames = 1000;
+simFrames = 1000; %Number of iterations
+waterStart = 100; %Starts after "waterStart" iterations
+waterStop = 150;
+waterBombXpos = 100;
 
 for iteration = 1:simFrames
+    pause(0.0001);
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    %Graphics
+    if iteration > waterStart && iteration < waterStop
+        waterBombing = true;
+    else
+        waterBombing = false;
+    end
+    
+%     %Temporary until new waterbombing function
+%     if waterBombing
+%         coords = WaterBomb(10,100*(iteration-waterStart));
+%         plot(10,abs(coords),'.','color','b');
+%     end
+%     
+    for i = 1:N
+        if isBurning(i)
+            plot(forestPos(1,i),forestPos(2,i),'.','color','r','MarkerSize',treeRadius*2);
+        end
+    end
+       
+    iteration
 end
-
-
