@@ -34,6 +34,13 @@ windAngleAlterations = 10;
 windStrength = 3.*rand(N,1); %Rand strength between 0 and 3;
 windStrengthAlterations = 20;
 
+angleMatrix = zeros(N);
+for i = 1:N
+    for j = 1:N
+        angleMatrix(i,j) = getAngleMatrix(forestPos(:,i),forestPos(:,j));
+    end
+end 
+
 [x,y] = ginput(1);
 a = [x,y];
 d = zeros(N,1);
@@ -91,7 +98,7 @@ end
 
 for i = 1:N
     for j = 1:N
-        windMatrix(i,j) = getWindScaleParameter(forestPos(:,i),forestPos(:,j),windAngle, windStrength);
+        windMatrix(i,j) = getWindScaleParameter(angleMatrix(i,j),windAngle, windStrength);
     end
 end
     
