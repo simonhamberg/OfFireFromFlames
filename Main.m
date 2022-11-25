@@ -43,7 +43,14 @@ for i = 1:N
         plot(forestPos(1,i),forestPos(2,i),'.','color','r','MarkerSize',treeRadius*2);
     end    
 end
-
+%--------------------------------------------------------------------------
 %Simulation start:
+
+simFrames = 1000;
+
+for iteration = 1:simFrames
+    
+    
+end
 
 
