@@ -85,7 +85,15 @@ if mod(iteration,windStrengthAlterations) == 0
     end
 end
     
-    
+%Create a matrix that will either increase or decrease probability of
+%spread between two trees depending on angle between them and the angle of
+%the wind
+
+for i = 1:N
+    for j = 1:N
+        windMatrix(i,j) = getWindScaleParameter(forestPos(:,i),forestPos(:,j),windAngle, windStrength);
+    end
+end
     
     
     
