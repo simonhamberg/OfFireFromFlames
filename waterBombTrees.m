@@ -1,6 +1,5 @@
 %Author Johan Rumar Karlquist
 function indexWaterBombTrees = waterBombTrees(lineStart,lineEnd,forestPos,bombRadius)
-    %axis=1 motsvarar waterbombning i x-led, och axis=2 waterbombning i y-led
     distanceToLine=ones(5000,1)*(bombRadius+1);
     indexWaterBombTrees=[];
     for i=1:5000
