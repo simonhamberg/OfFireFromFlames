@@ -8,6 +8,7 @@
 %forestPos = readmatrix('Forest.csv');
 %[n,N] = size(forestPos);
 
+%Ad this block to initialization block of main
 windScaleParam = zeros(N,N);
 
 windAngle = 2*pi*rand(1,1); %Randomize start angle
@@ -16,7 +17,7 @@ windAngleAlterations = 10;
 windStrength = 3.*rand(N,1); %Rand strength between 0 and 3;
 windStrengthAlterations = 20;
 
-
+%% Add this block to simulation part of main
 %Alternate wind angle and strength 10 respectively 20 times in total
 if mod(iteration,windAngleAlterations) == 0
     %Create random small angle alternation
