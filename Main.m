@@ -26,6 +26,14 @@ initFireRadius = 10;
 plot(forestPos(1,:),forestPos(2,:),'.','color','g','MarkerSize',treeRadius*2);
 isBurning = false(N,1);
 
+windScaleParam = zeros(N,N);
+
+windAngle = 2*pi*rand(1,1); %Randomize start angle
+windAngleAlterations = 10;
+
+windStrength = 3.*rand(N,1); %Rand strength between 0 and 3;
+windStrengthAlterations = 20;
+
 [x,y] = ginput(1);
 a = [x,y];
 d = zeros(N,1);
@@ -53,8 +61,29 @@ waterBombXpos = 100;
 for iteration = 1:simFrames
     pause(0.0001);
     
+  
+%Wind calculations  
+if mod(iteration,windAngleAlterations) == 0
+    %Create random small angle alternation
+    deltaAngle=2*rand(1,1)-1;
+    deltaAngle = deltaAngle*pi/100; %Make sure the alternation is small
+    windAngle = windAngle + deltaAngle;
+end
+
+%Alternate windStrength a bit more often than windAngle
+if mod(iteration,windStrengthAlterations) == 0 
+    %Create random small strength alteration
+    deltaStrength = (2*rand(1,1)-1)/windStrengthAlterations;
     
-    
+    %Limit strength to 3x
+    if (windStrength + deltaStrength) < 1/3
+        windStrength = 1/3; 
+    elseif (windStrength + deltaStrength) > 3
+        windStrength = 3;
+    else
+        windStrength = windStrength + deltaStrength;
+    end
+end
     
     
     
