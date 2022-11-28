@@ -21,7 +21,7 @@ forestSize = [1000,1000];
 treeOffset = 0;
 trees = 5000;
 initFireRadius = 10;
-criticalRadius = 100;
+criticalRadius = 70;
 probabilityConstant = criticalRadius^2/2 ;
 
 [n,N] = size(forestPos);
@@ -30,22 +30,18 @@ isBurning = false(N,1);
 
 windScaleParam = zeros(N,N);
 
-windAngle = 2*pi*rand; %Randomize start angle
-windAngleAlterations = 10;
+%windAngle = 2*pi*rand; %Randomize start angle
+windAngle = pi/6;
+windAngleAlterations = 1;
 
-windStrength = 3.*rand; %Rand strength between 0 and 3;
-windStrengthAlterations = 20;
-
-angleMatrix = zeros(N);
-for i = 1:N
-    for j = 1:N
-        angleMatrix(i,j) = getAngleMatrix(forestPos(:,i),forestPos(:,j));
-    end
-end
+windStrength = 100.*rand; %Rand strength between 0 and 3;
+windStrengthAlterations = 10;
 
 [x,y] = ginput(1);
 a = [x,y];
 d = zeros(N,1);
+
+angleMatrix = getAngleMatrix(a);
 
 for i = 1:N
     d(i) = norm(forestPos(:,i) - a');
@@ -74,22 +70,20 @@ for iteration = 1:simFrames
 
     %Wind calculations
     if mod(iteration,windAngleAlterations) == 0
-        %Create random small angle alternation
-        deltaAngle=2*rand(1,1)-1;
-        deltaAngle = deltaAngle*pi/100; %Make sure the alternation is small
+        deltaAngle =  normrnd(0,pi/6);
         windAngle = windAngle + deltaAngle;
     end
 
     %Alternate windStrength a bit more often than windAngle
-    if mod(iteration,windStrengthAlterations) == 0
+     if mod(iteration,windStrengthAlterations) == 0
         %Create random small strength alteration
         deltaStrength = (2*rand(1,1)-1)/windStrengthAlterations;
 
         %Limit strength to 3x
-        if (windStrength + deltaStrength) < 1/3
-            windStrength = 1/3;
-        elseif (windStrength + deltaStrength) > 3
-            windStrength = 3;
+        if (windStrength + deltaStrength) < 1/3 * probabilityConstant
+            windStrength = 1/3 * probabilityConstant;
+        elseif (windStrength + deltaStrength) > 3 * probabilityConstant
+            windStrength = 3*probabilityConstant;
         else
             windStrength = windStrength + deltaStrength;
         end
@@ -98,11 +92,9 @@ for iteration = 1:simFrames
     %Create a matrix that will either increase or decrease probability of
     %spread between two trees depending on angle between them and the angle of
     %the wind
-    windMatrix = zeros(N);
+    windMatrix = zeros(N,1);
     for i = 1:N
-        for j = 1:N
-            windMatrix(i,j) = getWindScaleParameter(angleMatrix(i,j),windAngle, windStrength);
-        end
+            windMatrix(i,1) = getWindScaleParameter(angleMatrix(i,1),windAngle, windStrength);
     end
 
     %Spreads the fire
@@ -110,7 +102,7 @@ for iteration = 1:simFrames
     newBurnetTrees = isBurning;
     for i = 1:N
         if isBurning(i)
-            temp = fireSpread(i,distanceMat,probabilityConstant,criticalRadius,windMatrix);
+            temp = fireSpread(i,distanceMat,probabilityConstant,criticalRadius,windMatrix(i,1));
             for i1 = 1:length(temp)
                 newBurnetTrees(temp(i1),1) = true;
             end
