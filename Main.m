@@ -140,7 +140,7 @@ for iteration = 1:simFrames
     %     end
     %
     changeInForest = false;
-    for i = 1:N
+    for i = 1:N 
         
         if isBurning(i) && wasBurning(i) == false
             wasBurning(i,simFrames + 1) = isBurning(i);
@@ -154,6 +154,10 @@ for iteration = 1:simFrames
         if wasBurning(i)
             plot(forestPos(1,i),forestPos(2,i),'.','color',[.7 .7 .7],'MarkerSize',treeRadius*2);
         end       
+        %Lägg till plot för vattnade träd.
+        %if isWater(i)
+        %    plot(forestPos(1,i),forestPos(2,i),'.','color','b','MarkerSize',treeRadius*2);
+        %end
         
     end
     r_gb = r_gb - 25;
