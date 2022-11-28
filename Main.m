@@ -130,7 +130,7 @@ for iteration = 1:simFrames
     %         plot(10,abs(coords),'.','color','b');
     %     end
     %
-  
+    changeInForest = false;
     for i = 1:N
         
         if isBurning(i) && wasBurning(i) == false
@@ -139,6 +139,7 @@ for iteration = 1:simFrames
                 r_gb = 0;
             end
             plot(forestPos(1,i),forestPos(2,i),'.','color',1/255*[255 r_gb 0],'MarkerSize',treeRadius*2);
+            changeInForest = true;
         end
         
         if wasBurning(i)
@@ -148,4 +149,8 @@ for iteration = 1:simFrames
     end
     r_gb = r_gb - 25;
     iteration
+    if ~changeInForest %added
+        disp('No more trees are burning')
+        break
+    end
 end
