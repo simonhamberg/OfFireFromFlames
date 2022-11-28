@@ -15,6 +15,7 @@ distanceMat = readmatrix('DistanceMatrix.csv');
 %--------------------------------------------------------------------------
 %Author: Tim Johansson
 %Local parameters
+clf; clc;
 treeRadius = 2;
 forestSize = [1000,1000];
 treeOffset = 0;
@@ -24,7 +25,7 @@ criticalRadius = 100;
 probabilityConstant = criticalRadius^2/2 ;
 
 [n,N] = size(forestPos);
-plot(forestPos(1,:),forestPos(2,:),'.','color','g','MarkerSize',treeRadius*2);
+plot(forestPos(1,:),forestPos(2,:),'.','color',[0 100/255 0],'MarkerSize',treeRadius*2);
 isBurning = false(N,1);
 
 windScaleParam = zeros(N,N);
@@ -56,7 +57,7 @@ end
 hold on
 for i = 1:N
     if isBurning(i)
-        plot(forestPos(1,i),forestPos(2,i),'.','color','r','MarkerSize',treeRadius*2);
+        plot(forestPos(1,i),forestPos(2,i),'.','color',1/255*[255 130 0],'MarkerSize',treeRadius*2);
     end
 end
 %--------------------------------------------------------------------------
@@ -65,10 +66,11 @@ simFrames = 1000; %Number of iterations
 waterStart = 100; %Starts after "waterStart" iterations
 waterStop = 150;
 waterBombXpos = 100;
-
+wasBurning = false(N,1);
+r_gb = 120;
 for iteration = 1:simFrames
     pause(0.0001);
-
+    wasBurning = isBurning + wasBurning;
 
     %Wind calculations
     if mod(iteration,windAngleAlterations) == 0
@@ -114,8 +116,10 @@ for iteration = 1:simFrames
             end
         end
     end
+    
+    newBurnetTrees = newBurnetTrees - isBurning;
     isBurning = newBurnetTrees;
-
+    
 
 
 
@@ -134,11 +138,22 @@ for iteration = 1:simFrames
     %         plot(10,abs(coords),'.','color','b');
     %     end
     %
+  
     for i = 1:N
-        if isBurning(i)
-            plot(forestPos(1,i),forestPos(2,i),'.','color','r','MarkerSize',treeRadius*2);
+        
+        if isBurning(i) && wasBurning(i) == false
+            wasBurning(i,simFrames + 1) = isBurning(i);
+            if r_gb<0
+                r_gb = 0;
+            end
+            plot(forestPos(1,i),forestPos(2,i),'.','color',1/255*[255 r_gb 0],'MarkerSize',treeRadius*2);
         end
+        
+        if wasBurning(i)
+            plot(forestPos(1,i),forestPos(2,i),'.','color',[.7 .7 .7],'MarkerSize',treeRadius*2);
+        end       
+        
     end
-
+    r_gb = r_gb - 25;
     iteration
 end
