@@ -27,6 +27,7 @@ probabilityConstant = criticalRadius^2/2 ;
 [n,N] = size(forestPos);
 plot(forestPos(1,:),forestPos(2,:),'.','color',[0 100/255 0],'MarkerSize',treeRadius*2);
 isBurning = false(N,1);
+isWater = false(N,1);
 
 windScaleParam = zeros(N,N);
 
@@ -115,7 +116,15 @@ for iteration = 1:simFrames
 
 
 
-
+    if mod(iteration,5)==0 %Gör vattenbombning varje 5 iterationer (subject to change)
+        [lineEnd,lineStart]=getWaterBombDirection(x1,x2,y1,y2); %x1,y1 är koordinater för ett träd som nyss börjat brinna och x2,y2 är koordinater 
+        %för eldens start position. Vet inte exakt hur man får det än.
+        waterTrees=waterBombTrees(lineStart,lineEnd,forestPos,50);
+        for i =1:length(waterTrees)
+            isWater(waterTrees(i))=true;
+            isBurning(waterTrees(i))=false;
+        end
+    end
 
     %Graphics
     %     if iteration > waterStart && iteration < waterStop
