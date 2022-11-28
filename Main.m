@@ -117,8 +117,15 @@ for iteration = 1:simFrames
 
 
     if mod(iteration,5)==0 %Gör vattenbombning varje 5 iterationer (subject to change)
-        [lineEnd,lineStart]=getWaterBombDirection(x1,x2,y1,y2); %x1,y1 är koordinater för ett träd som nyss börjat brinna och x2,y2 är koordinater 
-        %för eldens start position. Vet inte exakt hur man får det än.
+        indexBurningTrees=[];
+        for i=1:N
+            if isBurning(i)
+                indexBurningTrees(length(indexBurningTrees)+1)=i;
+            end
+        end
+        indexRandomBurningTree=indexBurningTrees(randn([1,length(indexBurningTrees)]));
+        [lineEnd,lineStart]=getWaterBombDirection(forestPos(1,indexRandomBurningTree),a(1),forestPos(2,indexRandomBurningTree),a(2)); 
+        %x1,y1 är koordinater för ett träd som nyss börjat brinna och x2,y2 är koordinater för eldens start position. Vet inte exakt hur man får det än.
         waterTrees=waterBombTrees(lineStart,lineEnd,forestPos,50);
         for i =1:length(waterTrees)
             isWater(waterTrees(i))=true;
