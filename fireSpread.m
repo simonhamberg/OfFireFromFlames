@@ -7,8 +7,8 @@ burningTreeVector = zeros(1,length(nearbyTrees));
 i2 = 1;
 for i = 1:length(nearbyTrees)-1
     distance = distanceMatrix(burningTree,nearbyTrees(i+1));
-    windImpact = Wind(burningTree,nearbyTrees(i+1));
-    Probability = 1/distance^2*probabilityConstant*windImpact; 
+    %windImpact = Wind(burningTree,nearbyTrees(i+1));
+    Probability = 1/(distance)^2*probabilityConstant*Wind;%windImpact; 
     if (Probability > rand)
         burningTreeVector(i2) = nearbyTrees(i2+1);
         i2 = i2 + 1;
