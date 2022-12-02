@@ -1,3 +1,7 @@
+%This is useless, only used to test while implementing wind
+
+
+
 %Get wind angle 
 %Course [FFR120]
 %Group Anacondas
@@ -5,10 +9,6 @@
 %--------------------------------------------------------------------------
 %Author: Oscar Karlsson
 
-%forestPos = readmatrix('Forest.csv');
-%[n,N] = size(forestPos);
-
-%Ad this block to initialization block of main
 windScaleParam = zeros(N,N);
 
 windAngle = 2*pi*rand(1,1); %Randomize start angle
@@ -17,8 +17,7 @@ windAngleAlterations = 10;
 windStrength = 3.*rand(N,1); %Rand strength between 0 and 3;
 windStrengthAlterations = 20;
 
-%% Add this block to simulation part of main
-%Alternate wind angle and strength 10 respectively 20 times in total
+%% 
 if mod(iteration,windAngleAlterations) == 0
     %Create random small angle alternation
     deltaAngle=2*rand(1,1)-1;
@@ -41,11 +40,6 @@ if mod(iteration,windStrengthAlterations) == 0
     end
 end
 
-
-
-%Create a matrix that will either increase or decrease probability of
-%spread between two trees depending on angle between them and the angle of
-%the wind
 
 for i = 1:N
     for j = 1:N
