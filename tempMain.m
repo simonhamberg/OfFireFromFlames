@@ -41,7 +41,7 @@ windStrengthAlterations = 10;
 a = [x,y];
 d = zeros(N,1);
 
-angleMatrix = getAngleMatrix(a);
+angleMatrix = getAngleMatrix(a, forestPos);
 
 for i = 1:N
     d(i) = norm(forestPos(:,i) - a');
