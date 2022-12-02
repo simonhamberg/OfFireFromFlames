@@ -68,7 +68,6 @@ simFrames = 1000; %Number of iterations
 waterStart = 100; %Starts after "waterStart" iterations
 waterStop = 150;
 waterBombXpos = 100;
-r_gb = 120;
 for iteration = 1:simFrames
     pause(0.0001);
     
