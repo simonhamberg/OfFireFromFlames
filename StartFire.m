@@ -1,9 +1,14 @@
+%Used to test code
+
 %Start a fire
 %Course [FFR120]
 %Group Anacondas
 %--------------------------------------------------------------------------
 %--------------------------------------------------------------------------
 %Author: Tim Johansson
+
+%https://se.mathworks.com/help/matlab/ref/matlab.graphics.shape.internal.datacursormanager.html
+
 clc; clear; clf;
 
 treeRadius = 2;
@@ -16,8 +21,6 @@ forestPos = readmatrix('Forest.csv');
 [n,N] = size(forestPos);
 plot(forestPos(1,:),forestPos(2,:),'.','color','g','MarkerSize',treeRadius*2);
 isBurning = false(N,1);
-
-%https://se.mathworks.com/help/matlab/ref/matlab.graphics.shape.internal.datacursormanager.html
 
 [x,y] = ginput(1);
 a = [x,y];
