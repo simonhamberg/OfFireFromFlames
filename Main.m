@@ -68,12 +68,10 @@ simFrames = 1000; %Number of iterations
 waterStart = 100; %Starts after "waterStart" iterations
 waterStop = 150;
 waterBombXpos = 100;
-%wasBurning = false(N,1);
 r_gb = 120;
 for iteration = 1:simFrames
     pause(0.0001);
     
-    %wasBurning = isBurning + wasBurning;
 
     %Wind alternations
     if mod(iteration,windAngleAlterations) == 0
@@ -105,7 +103,6 @@ for iteration = 1:simFrames
     end
 
     %Spreads the fire
-    %     newBurnetTrees = false(1,trees);
     newBurnetTrees = isBurning;
     for i = 1:N
         if isBurning(i) > 0
@@ -119,7 +116,6 @@ for iteration = 1:simFrames
         end
     end
     
-    %newBurnetTrees = newBurnetTrees - isBurning;
     isBurning = newBurnetTrees;
     
 
@@ -144,10 +140,6 @@ for iteration = 1:simFrames
     for i = 1:N
         
         if isBurning(i) > 0 %&& wasBurning(i) == false
-           % wasBurning(i,simFrames + 1) = isBurning(i);
-%             if r_gb<0
-%                 r_gb = 0;
-%             end
             if isBurning(i) == 5
                 plot(forestPos(1,i),forestPos(2,i),'.','color',1/255*[255 0 0],'MarkerSize',treeRadius*2);  
             elseif isBurning(i) == 3      
@@ -161,7 +153,6 @@ for iteration = 1:simFrames
         end       
         
     end
-    %r_gb = r_gb - 25;
     iteration
     if ~changeInForest %added
         disp('No more trees are burning')
