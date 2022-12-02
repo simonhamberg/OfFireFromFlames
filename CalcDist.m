@@ -18,5 +18,5 @@ for i = 1:N
     end
 end
 
-%csvwrite('DistanceMatrix.csv', distance);
-save('DistanceMatrix.csv', distance);
+csvwrite('DistanceMatrix.csv', distance);
+%save('DistanceMatrix', 'distance');
