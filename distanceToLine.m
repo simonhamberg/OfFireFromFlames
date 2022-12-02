@@ -1,3 +1,4 @@
+https://www.mathworks.com/matlabcentral/fileexchange/97462-distance-between-point-and-line-segments
 function dist = distanceToLine(pt, v1, v2)
 a = v1 - v2;
 b = pt - v2;
