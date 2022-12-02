@@ -122,20 +122,14 @@ for iteration = 1:simFrames
 
 
 
-    %Graphics
-    %     if iteration > waterStart && iteration < waterStop
-    %         waterBombing = true;
-    %     else
-    %         waterBombing = false;
-    %     end
 
-    %     %Temporary until new waterbombing function
-    %     if waterBombing
-    %         coords = WaterBomb(10,100*(iteration-waterStart));
-    %         plot(10,abs(coords),'.','color','b');
-    %     end
-    %
-  changeInForest = false;
+    %Graphics
+    clf;
+    hold on
+    plot(forestPos(1,:),forestPos(2,:),'.','color',[0 100/255 0],'MarkerSize',treeRadius*2);
+    title(['Iteration = ' num2str(iteration)]);
+    
+    changeInForest = false;
     for i = 1:N
         
         if isBurning(i) > 0 %&& wasBurning(i) == false
@@ -152,9 +146,39 @@ for iteration = 1:simFrames
         end       
         
     end
-    iteration
+    
+    %Wind plot
+    u1 = forestPos;
+    u2 = zeros(2,N);
+    for i = 1:N
+        u2(:,i) = u1(:,i).*sin(angleMatrix(i)).*windMatrix(i);
+    end
+    quiver(u1(1,:),u1(2,:),u2(1,:),u2(2,:),'color','b');
+    axis([0 1000 0 1000]);
+    
+    
+    %Animation capture
+    ax = gca;
+    ax.Units = 'pixels';
+    pos = ax.Position;
+    ti = ax.TightInset;
+    rect = [-ti(1), -ti(2), pos(3)+ti(1)+ti(3), pos(4)+ti(2)+ti(4)];
+    Frame(iteration) = getframe(ax,rect);
+    
     if ~changeInForest %added
         disp('No more trees are burning')
         break
     end
+    
+    
+end
+
+%% Check animation
+fps = 10;
+frameSpeed = fps/30;
+
+figure
+for i = 1:iteration
+    imshow(Frame(i).cdata)
+    pause(frameSpeed);
 end
