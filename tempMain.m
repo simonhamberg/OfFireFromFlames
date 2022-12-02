@@ -15,7 +15,10 @@ distanceMat = readmatrix('DistanceMatrix.csv');
 %--------------------------------------------------------------------------
 %Author: Tim Johansson
 %Local parameters
-clf; clc;
+clf;
+%Comment out either angleMatrix on the row below or the row that creates it
+%further down
+clearvars -except forestPos distanceMat angleMatrix
 treeRadius = 2;
 forestSize = [1000,1000];
 treeOffset = 0;
@@ -41,7 +44,7 @@ windStrengthAlterations = 10;
 a = [x,y];
 d = zeros(N,1);
 
-angleMatrix = getAngleMatrix(a, forestPos);
+%angleMatrix = getAngleMatrix(a, forestPos);
 
 for i = 1:N
     d(i) = norm(forestPos(:,i) - a');
