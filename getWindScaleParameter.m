@@ -7,9 +7,9 @@
 
 function windScale  = getWindScaleParameter(treeAngle,windAngle, windStrength)
 
-if (abs(windAngle-treeAngle) < pi/4)
-    %Tree is in the wind generall direction -> increase likelyhood of
+    %Tree is in the wind general direction -> increase likelyhood of
     %spread
+if (abs(windAngle-treeAngle) < pi/4)
     windScale = windStrength;
 else
     %Tree is in opposite direction of wind -> lower probability of spread
