@@ -124,7 +124,8 @@ for iteration = 1:simFrames
         for i=1:N
             if (isBurning(i) == 5)
                 indexBurningTrees(length(indexBurningTrees)+1)=i;
-            elseif (isBurning(i) == 1)
+            end
+            if (isBurning(i) == 1)
                 indexOldBurningTrees(length(indexOldBurningTrees)+1)=i;
             end
         end
@@ -139,6 +140,11 @@ for iteration = 1:simFrames
                [lineEnd,lineStart]=getWaterBombDirection(forestPos(1,indexRandomBurningTree),...
                 forestPos(1,indexRandomOldBurningTree),forestPos(2,indexRandomBurningTree),...
                 forestPos(2,indexRandomOldBurningTree));
+            end
+            waterTrees=waterBombTrees(lineStart,lineEnd,forestPos,50);
+                
+            for i =1:length(waterTrees)
+                isBurning(waterTrees(i))=isBurning(waterTrees(i)) -20;
             end
         end
     end
