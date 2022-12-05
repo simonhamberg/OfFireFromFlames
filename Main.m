@@ -140,6 +140,7 @@ for iteration = 1:simFrames
                 forestPos(1,indexRandomOldBurningTree),forestPos(2,indexRandomBurningTree),...
                 forestPos(2,indexRandomOldBurningTree));
             end
+        end
     end
 
 
