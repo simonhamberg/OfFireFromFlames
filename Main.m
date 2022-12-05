@@ -191,6 +191,9 @@ for iteration = 1:simFrames
     
     
 end
+numberOfDestroyedTrees = numel(find(isBurning==-1));
+percDestrTrees = numberOfDestroyedTrees/5000;
+disp([num2str(numberOfDestroyedTrees), ' trees was destroyed, in other words ', num2str(percDestrTrees), '%'])
 
 %% Check animation
 fps = 30;
