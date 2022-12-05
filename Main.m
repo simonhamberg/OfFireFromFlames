@@ -24,12 +24,13 @@ clearvars -except forestPos distanceMat
 treeRadius = 2;
 forestSize = [1000,1000];
 treeOffset = 0;
-trees = 5000;
+
 initFireRadius = 10;
 criticalRadius = 70;
 probabilityConstant = criticalRadius^2/2 ;
 
 [n,N] = size(forestPos);
+trees = N;
 plot(forestPos(1,:),forestPos(2,:),'.','color',[0 100/255 0],'MarkerSize',treeRadius*2);
 isBurning = zeros(N,1); %%false
 
