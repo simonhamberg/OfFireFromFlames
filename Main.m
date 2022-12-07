@@ -8,8 +8,8 @@ clc; clear; clf;
 
 %Read
 %--------------------------------------------------------------------------
-forestPos = readmatrix('Forest.csv');
-distanceMat = readmatrix('DistanceMatrix.csv');
+forestPos = readmatrix('Newforest.csv');
+distanceMat = readmatrix('DistanceMatrix2.csv');
 
 %% Start a fire
 %--------------------------------------------------------------------------
@@ -27,7 +27,8 @@ treeOffset = 0;
 
 initFireRadius = 10;
 criticalRadius = 70;
-probabilityConstant = criticalRadius^2/2 ;
+% probabilityConstant = criticalRadius^2/64 ;
+probabilityConstant = 10^4;
 
 [n,N] = size(forestPos);
 trees = N;
@@ -38,9 +39,12 @@ windScaleParam = zeros(N,N);
 
 %windAngle = 2*pi*rand; %Randomize start angle
 windAngle = pi/6;
-windAngleAlterations = 1;
 
-windStrength = 100.*rand;
+
+windAngleAlterations = 5;
+
+windStrength = 3.*rand;
+windStrength0 = windStrength;
 windStrengthAlterations = 10;
 
 [x,y] = ginput(1);
@@ -70,13 +74,21 @@ waterStart = 100; %Starts after "waterStart" iterations
 waterStop = 150;
 waterBombXpos = 100;
 for iteration = 1:simFrames
+    windAngle
     pause(0.0001);
     
 
     %Wind alternations
     if mod(iteration,windAngleAlterations) == 0
-        deltaAngle =  normrnd(0,pi/6);
-        windAngle = windAngle + deltaAngle;
+        deltaAngle =  normrnd(0,pi/24);
+        if (windAngle + deltaAngle > 2*pi )
+            windAngle = windAngle + deltaAngle - 2*pi ;
+        elseif(windAngle + deltaAngle < 0 )
+            windAngle = windAngle + deltaAngle + 2*pi ;
+        else
+            windAngle = windAngle + deltaAngle;
+        end
+
     end
 
     %Windstrength alternations
@@ -85,10 +97,10 @@ for iteration = 1:simFrames
 
         %Limit strength (Compared "Fresh breeze" to "Strong gale", see The Beaufort Wind Scale)
         %Wind speed would be a more accurate name
-        if (windStrength + deltaStrength) < 1/3 * probabilityConstant
-            windStrength = 1/3 * probabilityConstant;
-        elseif (windStrength + deltaStrength) > 3 * probabilityConstant
-            windStrength = 3*probabilityConstant;
+        if (windStrength + deltaStrength) < 1/3 * windStrength0
+            windStrength = 1/3 * windStrength0;
+        elseif (windStrength + deltaStrength) > 3 * windStrength0
+            windStrength = 3*windStrength0;
         else
             windStrength = windStrength + deltaStrength;
         end
@@ -119,7 +131,7 @@ for iteration = 1:simFrames
     end
     
     isBurning = newBurnetTrees;
-    if mod(iteration,5)==0 %Gör vattenbombning varje 5 iterationer (subject to change)
+    if mod(iteration,100)==0 %Gör vattenbombning varje 5 iterationer (subject to change)
         indexBurningTrees=[];
         indexOldBurningTrees=[];
         for i=1:N
@@ -137,13 +149,13 @@ for iteration = 1:simFrames
             %x1,y1 är koordinater för ett träd som nyss börjat brinna och x2,y2 är
             %koordinater för eldens start position. Vet inte exakt hur man får det än.
             if (length(indexOldBurningTrees) ~= 0)
-               indexRandomOldBurningTree=indexOldBurningTrees(randi([1,length(indexOldBurningTrees)]));
-               [lineEnd,lineStart]=getWaterBombDirection(forestPos(1,indexRandomBurningTree),...
-                forestPos(1,indexRandomOldBurningTree),forestPos(2,indexRandomBurningTree),...
-                forestPos(2,indexRandomOldBurningTree));
+                indexRandomOldBurningTree=indexOldBurningTrees(randi([1,length(indexOldBurningTrees)]));
+                [lineEnd,lineStart]=getWaterBombDirection(forestPos(1,indexRandomBurningTree),...
+                    forestPos(1,indexRandomOldBurningTree),forestPos(2,indexRandomBurningTree),...
+                    forestPos(2,indexRandomOldBurningTree));
             end
-            waterTrees=waterBombTrees(lineStart,lineEnd,forestPos,50);
-                
+            waterTrees=waterBombTrees(lineStart,lineEnd,forestPos,50,N);
+
             for i =1:length(waterTrees)
                 isBurning(waterTrees(i))=isBurning(waterTrees(i)) -20;
             end
@@ -189,7 +201,7 @@ for iteration = 1:simFrames
     %quiver(u1(1,:),u1(2,:),u2(1,:),u2(2,:),'color','b');
     axis([0 1000 0 1000]);
     
-    
+
     %Animation capture
     ax = gca;
     ax.Units = 'pixels';
@@ -205,16 +217,16 @@ for iteration = 1:simFrames
     
     
 end
-numberOfDestroyedTrees = numel(find(isBurning==-1));
-percDestrTrees = numberOfDestroyedTrees/5000;
-disp([num2str(numberOfDestroyedTrees), ' trees was destroyed, in other words ', num2str(percDestrTrees), '%'])
+numberOfDestroyedTrees = numel(find(isBurning==-1)) + sum(isBurning == -21) + sum(isBurning == -11);
+percDestrTrees = numberOfDestroyedTrees/N;
+disp([num2str(numberOfDestroyedTrees), ' trees was destroyed, in other words ', num2str(percDestrTrees*100), '%'])
 
 %% Check animation
-fps = 30;
-frameSpeed = fps/30;
-
-figure
-for i = 1:iteration
-    imshow(Frame(i).cdata)
-    pause(frameSpeed);
-end
+% fps = 30;
+% frameSpeed = fps/30;
+% 
+% figure
+% for i = 1:iteration
+%     imshow(Frame(i).cdata)
+%     pause(frameSpeed);
+% end
